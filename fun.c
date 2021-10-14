@@ -1,3 +1,4 @@
+#include <string.h>
 #include "fun.h"
 
 Participants* create_element(){
@@ -9,19 +10,19 @@ Participants* create_element(){
 
     new_struct->name = calloc(CHAR_SIZE, sizeof(char));
     if (new_struct->name == NULL){
-        free(new_struct);
+        delete_element(new_struct);
         return NULL;
     }
 
     new_struct->company = calloc(CHAR_SIZE, sizeof(char));
     if (new_struct->company == NULL){
-        free(new_struct);
+        delete_element(new_struct);
         return NULL;
     }
 
     new_struct->position = calloc(CHAR_SIZE, sizeof(char));
     if (new_struct->position == NULL){
-        free(new_struct);
+        delete_element(new_struct);
         return NULL;
     }
 
@@ -32,9 +33,15 @@ int delete_element(Participants *element){
     if (element == NULL) {
         return -1;
     }
-    free(element->company);
-    free(element->name);
-    free(element->position);
+    if (element->company != NULL){
+        free(element->company);
+    }
+    if (element->name != NULL){
+        free(element->name);
+    }
+    if (element->position != NULL){
+        free(element->position);
+    }
     free(element);
     return 0;
 
@@ -86,7 +93,7 @@ int print_result(const size_t *num,Participants *const *arr_elemnts){
 
 Participants **get_result(Participants *data, const Participants *elemnt_info, const size_t *size,  size_t *num){
 
-    if(*size < 1){
+    if(*size < 1 || size == NULL){
         return NULL;
     }
     if(data == NULL || elemnt_info == NULL){
@@ -117,7 +124,7 @@ Participants **get_result(Participants *data, const Participants *elemnt_info, c
     }
 
     if(count == 0){
-        printf("Not find\n");
+        printf("not found\n");
         return NULL;
     }
     *num = count;
@@ -130,7 +137,7 @@ Participants **get_result(Participants *data, const Participants *elemnt_info, c
     for(size_t i = 0; i < count; i++){
         result[i] = create_element();
         if (result[i] == NULL){
-            printf("error_create");
+            fprintf(stderr,"error_create");
             return NULL;
         }
     }
@@ -156,12 +163,12 @@ Participants **get_result(Participants *data, const Participants *elemnt_info, c
 }
 
 int delete_arr(Participants **arr,const size_t *num){
-    if (arr == NULL){
+    if (arr == NULL || num == NULL){
         return -1;
     }
     for (size_t i = 0; i < (*num); i++){
         if(delete_element(arr[i]) != 0 ){
-            printf("dellete_error\n");
+            fprintf(stderr, "error_delete\n");
             return -1;
         }
     }

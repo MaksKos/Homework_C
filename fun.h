@@ -1,12 +1,9 @@
 #pragma once
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
-
 
 #define CHAR_SIZE 16
-#define DATA_SIZE 3
+
 
 typedef struct Participants
 {

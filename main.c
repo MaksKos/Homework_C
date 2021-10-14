@@ -14,12 +14,12 @@ int main()
 
     Participants *information = create_element();
     if(information == NULL){
-        return -1;
+        return EXIT_FAILURE;
     }
 
     if(get_information(information) != 0){
         delete_element(information);
-        return -1;
+        return EXIT_FAILURE;
     }
 
     Participants **result = get_result(test_data, information, &size, &num);
@@ -28,7 +28,7 @@ int main()
         delete_element(information);
         free(result);
         printf("error_get_result\n");
-        return -1;
+        return EXIT_FAILURE;
     }
 
     delete_element(information);
@@ -36,10 +36,10 @@ int main()
     if(print_result(&num, result) != 0){
         printf("Error\n");
         delete_arr(result, &num);
-        return -1;
+        return EXIT_FAILURE;
     };
 
     delete_arr(result, &num);
-    return 0;
+    return EXIT_SUCCESS;
 }
 
