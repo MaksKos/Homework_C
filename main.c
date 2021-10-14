@@ -27,6 +27,7 @@ int main()
     if( result == NULL){
         delete_element(information);
         free(result);
+        printf("error_get_result\n");
         return -1;
     }
 

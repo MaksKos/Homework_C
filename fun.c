@@ -77,7 +77,7 @@ int print_result(const size_t *num,Participants *const *arr_elemnts){
     }
     for(size_t i=0; i < (*num); i++){
         printf("\nInformation about participant_%zu:\nID: %zu\nName: %s\nCompany: %s\nPosition: %s\nImportance: %zu\nCoinsidered: %zu/5\n", 
-                i, arr_elemnts[i]->id, arr_elemnts[i]->name, arr_elemnts[i]->company, arr_elemnts[i]->position, 
+                i, arr_elemnts[i]->id,  arr_elemnts[i]->name, arr_elemnts[i]->company, arr_elemnts[i]->position, 
                 arr_elemnts[i]->importance, arr_elemnts[i]->coinside);
     }
     printf("\n");
@@ -129,14 +129,24 @@ Participants **get_result(Participants *data, const Participants *elemnt_info, c
 
     for(size_t i = 0; i < count; i++){
         result[i] = create_element();
+        if (result[i] == NULL){
+            printf("error_create");
+            return NULL;
+        }
     }
     for(size_t i = 0; i < (*size); i++){
         if(data[i].coinside > 0){
             count--;
             result[count]->id = data[i].id;
-            *(result[count]->name) = *(data[i].name);
-            *(result[count]->company) = *(data[i].company);
-            *(result[count]->position) = *(data[i].position);
+            if(strcpy(result[count]->name, data[i].name) == NULL){
+                return NULL;
+            }
+            if(strcpy(result[count]->company, data[i].company) == NULL){
+                return NULL;
+            }   
+            if(strcpy(result[count]->position, data[i].position) == NULL){
+                return NULL;
+            }
             result[count]->importance = data[i].importance;
             result[count]->coinside = data[i].coinside;
         }
@@ -150,7 +160,10 @@ int delete_arr(Participants **arr,const size_t *num){
         return -1;
     }
     for (size_t i = 0; i < (*num); i++){
-        delete_element(arr[i]);
+        if(delete_element(arr[i]) != 0 ){
+            printf("dellete_error\n");
+            return -1;
+        }
     }
     free(arr);
     return 0;
